@@ -1,0 +1,24 @@
+{
+  "name": "sismigracion",
+  "version": "1.0.0",
+  "description": "Migration script from MSSQL to Mongo as JSON data.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gibran Amparan",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "bluebird": "^3.5.1",
+    "chalk": "^2.3.0",
+    "moment": "^2.20.1",
+    "mongoose": "^4.13.7",
+    "sequelize": "^4.28.6",
+    "tedious": "^2.1.5"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1"
+  }
+}

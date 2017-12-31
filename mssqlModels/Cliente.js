@@ -1,0 +1,43 @@
+var Sequelize = require('sequelize');
+var connMSSQL = require('../connectionMSSQL')
+
+const Cliente = connMSSQL.define('cliente', {
+    ClienteID: { type: Sequelize.INTEGER, primaryKey: true },
+    Nombre: { type: Sequelize.STRING },
+    Apellido: { type: Sequelize.STRING },
+    EstadoCivil: { type: Sequelize.STRING },
+    FechaNacimiento: { type: Sequelize.DATE },
+    RFC: { type: Sequelize.STRING },
+    Email: { type: Sequelize.STRING },
+    Grupo: { type: Sequelize.STRING },
+    TelCasa: { type: Sequelize.STRING },
+    Cel: { type: Sequelize.STRING },
+    Oficina: { type: Sequelize.STRING },
+    PaisFis: { type: Sequelize.STRING },
+    CalleDF: { type: Sequelize.STRING },
+    NumExtDF: { type: Sequelize.STRING },
+    EstadoDF: { type: Sequelize.STRING },
+    CiudadDF: { type: Sequelize.STRING },
+    MpioDF: { type: Sequelize.STRING },
+    ColoniaDF: { type: Sequelize.STRING },
+    CodigoPostal: { type: Sequelize.STRING },
+    PaisDC: { type: Sequelize.STRING },
+    ContactoDC: { type: Sequelize.STRING },
+    CalleDC: { type: Sequelize.STRING },
+    NumExtDC: { type: Sequelize.STRING },
+    NumIntDC: { type: Sequelize.STRING },
+    EstadoDC: { type: Sequelize.STRING },
+    CiudadDC: { type: Sequelize.STRING },
+    ColoniaDC: { type: Sequelize.STRING },
+    CodigoPostalDC: { type: Sequelize.STRING },
+    PaisDC2: { type: Sequelize.STRING },
+    CalleDC2: { type: Sequelize.STRING },
+    NumExtDC2: { type: Sequelize.STRING },
+    EstadoDC2: { type: Sequelize.STRING },
+    CiudadDC2: { type: Sequelize.STRING },
+    ColoniaDC2: { type: Sequelize.STRING },
+    CodigoPostalDC2: { type: Sequelize.STRING },
+    Observaciones: { type: Sequelize.STRING },
+});
+
+module.exports = Cliente
