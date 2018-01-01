@@ -4,6 +4,7 @@
  * This contains model schema for the Poliza entity.
  */
  const mongoose = require('mongoose');
+ const util = require('util');
  const Schema = mongoose.Schema;
  const especificacionesAutoTuristaTitulos = [
    'Colisión, Rotura de cristales',
@@ -177,9 +178,11 @@ PolizaSchema.statics.mapData = function(data){
           especificacionesAutoTuristaTitulos.map((titulo, i) => ({
             seccion: i + 1,
             especificaciones: titulo,
-            amparado: 'excluido',
-            suma: null,
+            //amparado: 'excluido',
+            amparado : false,
+            suma: 0,
             prima: 0,
+            montoAsegurado : 0
           })),
       },
       vehiculo: { // Ramo: Autos, SubRamo: {Sedan||PickUp||Motocicleta}
@@ -256,58 +259,46 @@ PolizaSchema.statics.mapData = function(data){
       },
     };
 
+    function fillEspecDanio(espec,vals){
+      vals.amp = vals.amp ? vals.amp.replace(',',"") : 0;
+      if(vals.amp && !isNaN(vals.amp)){
+        esp.suma = Number(vals.amp); //se establece como la suma total
+        esp.amparado = true; //y se marca como amparada
+      }else{
+        esp.suma = 0;
+        esp.amparado = false;
+      }
+      //Datos que provienen de sis viejo
+      esp.montoAsegurado = vals.montoAsegurado
+      esp.prima= vals.prima //ya no se usa
+    }
+
     //**LLENAR especificacionesAutoTurista
     for(var c=0; c<especificacionesAutoTuristaTitulos.length; c++){
       var esp = resultado.turista.especificacionesAutoTurista[c]
-      //'Colisión, Rotura de cristales',
-      if(c == 0){
-        esp.montoAsegurado = i.turista_RoturaCristales
-        esp.amparado=  i.RoturaCristalesAmp
-        esp.suma= i.RoturaCristalesSuma
-        esp.prima= i.RoturaCristalesPrima
-      }
-      //'Incendio, robo total, y desastres naturales',
-      if(c == 1){
-        esp.montoAsegurado = i.turista_Robo
-        esp.amparado=  i.turista_RoboAmp
-        esp.suma= i.turista_RoboSuma
-        esp.prima= i.turista_RoboPrima 
-      }
-      //'Responsabilidad civil por daños a bienes de terceros',
-      if(c == 2){
-        esp.montoAsegurado = i.turista_RCDaniosBienesTerceros
-        esp.amparado=  i.turista_RCDaniosBienesTercerosAmp
-        esp.suma= i.turista_RCDaniosBienesTercerosSuma
-        esp.prima= i.turista_RCDaniosBienesTercerosPrima
-      }
-      //'Gasto medico ocupantes del vehiculo asegurado',
-      if(c == 3){
-        esp.montoAsegurado = i.turista_GastosMedicos
-        esp.amparado=  i.turista_GastosMedicosAmp
-        esp.suma= i.turista_GastosMedicosSuma
-        esp.prima= i.turista_GastosMedicosPrima 
-      }
-      //'Extension territorial',
-      if(c == 4){
-        esp.montoAsegurado = i.turista_ExtTerritorial
-        esp.amparado=  i.turista_ExtTerritorialAmp
-        esp.suma= i.turista_ExtTerritorialSuma
-        esp.prima= i.turista_ExtTerritorialPrima 
-      }
-      //'Otros'
-      if(c == 5){
-        esp.montoAsegurado = i.turista_Otros
-        esp.amparado=  i.turista_OtrosAmp
-        esp.suma= i.turista_OtrosSuma
-        esp.prima= i.turista_OtrosPrima 
-      }
-      //'Danios personas terceros'
-      if(c == 6){
-        esp.montoAsegurado = i.turista_RCDaniosPersonasTerceros
-        esp.amparado=  i.turista_RCDaniosPersonasTercerosAmp
-        esp.suma= i.turista_RCDaniosPersonasTercerosSuma
-        esp.prima= i.turista_RCDaniosPersonasTercerosPrima 
-      }
+      
+      if(c == 0) //'Colisión, Rotura de cristales',
+        vals = {amp : i.RoturaCristalesAmp, prima : i.RoturaCristalesPrima, montoAsegurado : i.turista_RoturaCristales}
+      
+      if(c == 1) //'Incendio, robo total, y desastres naturales',
+        vals = {amp : i.RoboAmp, prima : i.RoboPrima, montoAsegurado : i.Robo}
+      
+      if(c == 2) //'Responsabilidad civil por daños a bienes de terceros',
+        vals = {amp : i.RCDaniosBienesTercerosAmp, prima : i.RCDaniosBienesTercerosPrima, montoAsegurado : i.RCDaniosBienesTerceros}
+      
+      if(c == 3) //'Gasto medico ocupantes del vehiculo asegurado',
+        vals = {amp : i.GastosMedicosAmp, prima : i.GastosMedicosPrima, montoAsegurado : i.GastosMedicos}
+      
+      if(c == 4) //'Extension territorial',
+        vals = {amp : i.ExtTerritorialAmp, prima : i.ExtTerritorialPrima, montoAsegurado : i.ExtTerritorial}
+      
+      if(c == 5) //'Otros'
+        vals = {amp : i.OtrosAmp, prima : i.OtrosPrima, montoAsegurado : i.Otros}
+      
+      if(c == 6) //'Danios personas terceros'
+        vals = {amp : i.RCDaniosPersonasTercerosAmp, prima : i.RCDaniosPersonasTercerosPrima, montoAsegurado : i.RCDaniosPersonasTerceros}
+      
+      fillEspecDanio(esp,vals)
     }
 
     //TODO LLENAR DATOS DE DANIOS especificacionesDanosCasa

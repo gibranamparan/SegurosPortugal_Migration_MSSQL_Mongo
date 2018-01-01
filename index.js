@@ -8,8 +8,8 @@ var ClientesMSSQL = require('./mssqlModels/Cliente')
 var PolizasMongo = require('./mongoModels/Poliza')
 var PolizasMSSQL = require('./mssqlModels/Poliza')
 
-migrateClientes()
-//migratePolizas()
+//migrateClientes()
+migratePolizas()
 
 function mapDataValues(data){
     return data.map(function(item,idx){return item.dataValues})
