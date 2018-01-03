@@ -1,6 +1,6 @@
 const chalk = require('chalk')
 var Sequelize = require('sequelize');
-var URI = 'mssql://DB_A127E3_sistestmigracion_admin:z6HpZwNIqnKCvtom@SQL5037.site4now.net/DB_A127E3_sistestmigracion';
+var URI = process.env.MSSQL_CONN ? process.env.MSSQL_CONN : "mssql://(LocalDb)/MSSQLLocalDB/sismigracion"
 
 var sequelize = new Sequelize(URI, {
     pool: { max: 5, min: 0, acquire: 30000, idle: 10000 },
